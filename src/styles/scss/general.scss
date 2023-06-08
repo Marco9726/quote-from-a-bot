@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap');
+@font-face{
+
+	font-family: MKfont;
+	src: url('../../assets/fonts/MKXTitle.ttf');
+}
+
+@font-face{
+
+	font-family: HappyFont;
+	src: url('../../assets/fonts/KGHAPPY.ttf');
+}
+
+*{
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+.happy-font{
+	font-family: HappyFont;
+}
+
+.electrolize-font{
+	font-family: 'Electrolize', sans-serif;
+}
+
+.bg-yellow{
+	background-color: rgb(239, 221, 116);
+}
