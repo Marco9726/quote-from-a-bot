@@ -9,6 +9,7 @@ export default {
          loader: null,
          modal: null,
          saveButton: null,
+         shareButton: null,
          modalContent: null,
          // parametri richiesta API
          ENDPOINT: 'https://api.openai.com/v1/chat/completions',
@@ -75,12 +76,31 @@ export default {
             link.click();
          });
       },
+      async shareQuote() {
+         // assemblo il testo
+         const text = `Senti cosa ha da dire ${this.charName}: "${this.charMessage}" #QuoteBOT #BooleanCodingWeek`;
+         // Share API
+         if (navigator.canShare) {
+            await navigator.share({
+               text: text,
+            });
+         } else {
+            console.log('Share API not supported');
+            this.fallbackShare(text);
+         }
+         console.log(text);
+      },
+      fallbackShare(text) {
+         const href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+         window.location.href = href;
+      },
    },
    mounted() {
       // costanti del DOM
       this.loader = document.querySelector('.overlay-loading');
       this.modal = document.querySelector('.overlay-modal');
       this.saveButton = document.getElementById('saveButton');
+      this.shareButton = document.getElementById('shareButton');
       this.modalContent = document.querySelector('.modal-content');
    },
 };
@@ -111,7 +131,10 @@ export default {
                </code>
             </div>
          </div>
+
+         <!-- buttons -->
          <div class="modal-buttons">
+            <!-- save -->
             <button
                class="border-blue py-2"
                id="saveButton"
@@ -119,7 +142,12 @@ export default {
             >
                <i class="fa-solid fa-download me-2"></i>Scarica
             </button>
-            <button class="border-blue py-2">
+            <!-- share -->
+            <button
+               class="border-blue py-2"
+               id="shareButton"
+               @click="shareQuote()"
+            >
                <i class="fa-solid fa-share me-2"></i>Condividi
             </button>
          </div>

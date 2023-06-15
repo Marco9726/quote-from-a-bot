@@ -1,0 +1,11 @@
+{
+	"short_name": "QuoteBOT",
+	"name": "Quote from a BOT",
+	"icons": [{
+		"src": "./src/assets/icon-192x192.png",
+		"type": "image/png",
+		"sizes": "192x192"
+	}],
+	"theme_color": "#53bbe4",
+	"display": "fullcreen"
+}
