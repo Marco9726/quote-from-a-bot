@@ -12,7 +12,7 @@ export default {
          modalContent: null,
          // parametri richiesta API
          ENDPOINT: 'https://api.openai.com/v1/chat/completions',
-         APY_KEY: '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',
+         APY_KEY: '#',
          action: 'di qualcosa in massimo 200 caratteri come se fossi ',
          temperature: 0.2,
          MODEL: 'gpt-3.5-turbo',
