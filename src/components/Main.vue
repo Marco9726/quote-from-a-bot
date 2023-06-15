@@ -8,9 +8,11 @@ export default {
          // elementi del DOM
          loader: null,
          modal: null,
+         saveButton: null,
+         modalContent: null,
          // parametri richiesta API
          ENDPOINT: 'https://api.openai.com/v1/chat/completions',
-         APY_KEY: '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',
+         APY_KEY: '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',
          action: 'di qualcosa in massimo 200 caratteri come se fossi ',
          temperature: 0.2,
          MODEL: 'gpt-3.5-turbo',
@@ -62,29 +64,44 @@ export default {
       hideModal() {
          this.modal.classList.add('d-none');
       },
+      saveQuote() {
+         html2canvas(this.modalContent).then(function (canvas) {
+            // document.body.appendChild(canvas);
+            console.log(canvas);
+            const dataURI = canvas.toDataURL('image/jpeg');
+            const link = document.createElement('a');
+            link.href = dataURI;
+            link.download = 'quote.jpeg';
+            link.click();
+         });
+      },
    },
    mounted() {
       // costanti del DOM
-      this.loader = document.querySelector('.layover-loading');
-      this.modal = document.querySelector('.layover-modal');
+      this.loader = document.querySelector('.overlay-loading');
+      this.modal = document.querySelector('.overlay-modal');
+      this.saveButton = document.getElementById('saveButton');
+      this.modalContent = document.querySelector('.modal-content');
    },
 };
 </script>
+
 <template>
    <main class="py-4">
-      <!--loading  layover-->
-      <div class="layover layover-loading d-none">
+      <!--loading  overlay-->
+      <div class="overlay overlay-loading d-none">
          <!-- loader gif -->
          <img src="../assets/loader.gif" alt="" />
       </div>
-      <!-- modal layover -->
-      <div class="layover layover-modal d-none">
+
+      <!-- modal overlay -->
+      <div class="overlay overlay-modal d-none">
          <!-- modal -->
-         <div class="my-modal bg-white p-4 mt-4">
-            <div class="modal-close-button" @click="hideModal">
+         <div class="my-modal bg-white mt-4 border-blue">
+            <div class="modal-close-button border-blue" @click="hideModal">
                <img src="../assets/close.svg" alt="" />
             </div>
-            <div class="model-content">
+            <div class="modal-content p-4">
                <h2>{{ charName }}</h2>
                <p>
                   {{ charMessage }}
@@ -94,12 +111,25 @@ export default {
                </code>
             </div>
          </div>
+         <div class="modal-buttons">
+            <button
+               class="border-blue py-2"
+               id="saveButton"
+               @click="saveQuote()"
+            >
+               <i class="fa-solid fa-download me-2"></i>Scarica
+            </button>
+            <button class="border-blue py-2">
+               <i class="fa-solid fa-share me-2"></i>Condividi
+            </button>
+         </div>
       </div>
       <div
          class="container flex-container d-flex flex-column align-items-center gap-4"
       >
          <!-- title -->
          <h2 class="choose-char text-center">CHOOSE YOUR CHARACTER</h2>
+
          <!-- character list -->
          <div
             class="character-list d-flex flex-wrap justify-content-center gap-4"
@@ -121,12 +151,13 @@ export default {
       </div>
    </main>
 </template>
+
 <style lang="scss">
 main {
    min-height: 75vh;
    background-color: black;
 
-   .layover {
+   .overlay {
       position: fixed;
       top: 0;
       right: 0;
@@ -134,7 +165,7 @@ main {
       left: 0;
       background-color: rgba(255, 255, 255, 0.5);
       z-index: 3;
-      &.layover-loading {
+      &.overlay-loading {
          display: flex;
          justify-content: center;
          align-items: center;
@@ -145,10 +176,9 @@ main {
 
       .my-modal {
          width: 50%;
-         border: 2px solid #1212b2;
          color: #1212b2;
          position: relative;
-         margin: 0 auto;
+         margin: 0.5rem auto;
 
          .modal-close-button {
             background-color: #ffaafb;
@@ -156,12 +186,29 @@ main {
             height: 2rem;
             width: 2rem;
             display: flex;
-            border: 2px solid #1212b2;
             cursor: pointer;
             padding: 0.3rem;
             position: absolute;
             top: 15px;
             right: 15px;
+         }
+      }
+
+      .modal-buttons {
+         width: 50%;
+         margin: 0 auto;
+         display: flex;
+         gap: 0.5rem;
+         button {
+            width: 100%;
+            font-size: 1.5rem;
+            background-color: white;
+            color: #1212b2;
+            font-weight: 600;
+            &:hover {
+               background-color: #1212b2;
+               color: white;
+            }
          }
       }
    }
@@ -203,6 +250,17 @@ main {
       h2.choose-char {
          font-size: 2.25rem;
          letter-spacing: 1.5rem;
+      }
+   }
+}
+
+@media screen and (max-width: 576px) {
+   main {
+      .overlay-modal {
+         .my-modal,
+         .modal-buttons {
+            width: 80%;
+         }
       }
    }
 }
